@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Peta Kampus</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- API Key Google Maps -->
+    <!-- Pastikan API Key benar dan gunakan async defer -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDS8QfVyYN1iXi5vRTrqAgVVFE3it7c3FE&callback=initMap" async defer></script>
-    <script src="script.js" defer></script>
 </head>
 <body>
 
@@ -56,6 +55,9 @@
         <button onclick="adminLogin()">Login</button>
     </div>
 </div>
+
+<!-- Script JavaScript harus di-load setelah Google Maps API -->
+<script src="script.js"></script>
 
 </body>
 </html>
