@@ -1,4 +1,23 @@
-// Fungsi untuk pencarian lokasi
+// Fungsi untuk menampilkan peta dengan Google Maps API
+function initMap() {
+    // Koordinat kampus (lokasi yang diberikan)
+    var kampusLocation = {lat: -1.6109265419079182, lng: 103.51806852993525}; // Koordinat kampus kamu
+
+    // Membuat peta baru
+    var map = new google.maps.Map(document.getElementById('campus-map'), {
+        zoom: 15, // Tingkat zoom peta
+        center: kampusLocation // Lokasi yang dijadikan pusat peta
+    });
+
+    // Menambahkan marker di lokasi kampus
+    var marker = new google.maps.Marker({
+        position: kampusLocation,
+        map: map,
+        title: 'Lokasi Kampus'
+    });
+}
+
+// Fungsi untuk pencarian lokasi (placeholder, logika bisa ditambah)
 function searchLocation() {
     var location = document.getElementById('search-location').value;
     alert('Mencari lokasi: ' + location);
