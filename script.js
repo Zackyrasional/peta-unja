@@ -1,7 +1,7 @@
-l// Fungsi untuk menampilkan peta dengan Google Maps API
+// Fungsi untuk menampilkan peta dengan Google Maps API
 function initMap() {
     // Koordinat kampus (lokasi yang diberikan)
-    var kampusLocation = {lat: -1.6109265419079182, lng: 103.51806852993525}; // Koordinat kampus kamu
+    var kampusLocation = { lat: -1.6109265419079182, lng: 103.51806852993525 };
 
     // Membuat peta baru
     var map = new google.maps.Map(document.getElementById('campus-map'), {
