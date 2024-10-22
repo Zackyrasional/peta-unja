@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peta Kampus</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1>Peta Kampus</h1>
+</header>
+
+<div class="container">
+    <!-- Pencarian Lokasi -->
+    <div class="search-bar">
+        <input type="text" id="search-location" placeholder="Cari gedung atau ruangan...">
+        <button onclick="searchLocation()">Cari</button>
+    </div>
+
+    <!-- Peta Kampus -->
+    <div id="campus-map" class="map">
+        <!-- Peta Google Maps atau leaflet.js di sini -->
+    </div>
+
+    <!-- Informasi Lokasi -->
+    <div id="location-info" class="info-box">
+        <h2>Informasi Lokasi</h2>
+        <p>Pilih lokasi pada peta untuk melihat detail.</p>
+    </div>
+
+    <!-- Admin Section (CRUD Lokasi dan Manajemen Acara) -->
+    <div class="admin-section" id="admin-section">
+        <h2>Admin Dashboard</h2>
+        
+        <!-- CRUD Lokasi -->
+        <h3>Tambah Lokasi Baru</h3>
+        <input type="text" id="new-building-name" placeholder="Nama Gedung">
+        <textarea id="new-building-description" placeholder="Deskripsi Gedung"></textarea>
+        <button onclick="addLocation()">Tambah Lokasi</button>
+
+        <!-- Manajemen Acara -->
+        <h3>Tambah Acara Kampus</h3>
+        <input type="text" id="event-name" placeholder="Nama Acara">
+        <input type="date" id="event-date">
+        <input type="time" id="event-time">
+        <button onclick="addEvent()">Tambah Acara</button>
+    </div>
+
+    <div id="admin-login">
+        <h3>Login Admin</h3>
+        <input type="text" id="admin-username" placeholder="Username">
+        <input type="password" id="admin-password" placeholder="Password">
+        <button onclick="adminLogin()">Login</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
