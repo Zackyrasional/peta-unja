@@ -3,41 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peta Kampus UNJA</title>
-    <link rel="stylesheet" href="style.css"> <!-- Memanggil file CSS -->
+    <title>Peta Kampus Universitas Jambi</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        header {
+            background-color: #ff9500;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .container, .map-container {
+            padding: 20px;
+            display: none;
+        }
+
+        .map {
+            width: 100%;
+            height: 400px;
+            margin-bottom: 20px;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-bar select {
+            margin-right: 10px;
+        }
+
+        .button {
+            background-color: #ff9500;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        .back-button {
+            background-color: #ff9500;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .info-box {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+        }
+
+        .login-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .guest-options {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 
 <header>
-    <h1>Peta Kampus UNJA</h1>
+    <h1>Peta Kampus Universitas jika</h1>
+    <h2>Mendalo</h2>
 </header>
 
-<div class="container">
+<!-- Pilihan Tamu atau Anggota -->
+<div class="login-container">
+    <h2>Pilih Role Anda</h2>
+    <button class="button" onclick="selectRole('guest')">Tamu</button>
+    <button class="button" onclick="selectRole('member')">Anggota</button>
+</div>
+
+<!-- Tampilan Peta dan Opsi Tamu -->
+<div class="map-container">
     <div class="search-bar">
-        <input type="text" id="search-location" placeholder="Cari gedung atau ruangan...">
-        <div id="autocomplete"></div>
-        <button onclick="searchLocation()">Cari</button>
+        <!-- Dropdown untuk Tamu -->
+        <div class="guest-options">
+            <select id="location-select" onchange="showAdditionalOptions()">
+                <option value="">Pilih lokasi tujuan...</option>
+                <option value="buildingA">Gedung A</option>
+            </select>
+
+            <!-- Dropdown sub-lokasi untuk tamu -->
+            <select id="option-select" style="display: none;" onchange="goToSelectedOption()">
+                <option value="">Pilih tindakan...</option>
+                <option value="direct">Langsung ke Tempat</option>
+                <option value="parking">Tempat Parkir</option>
+            </select>
+        </div>
+
+        <!-- Tombol kembali di pojok kanan atas -->
+        <button class="back-button" onclick="goBack()">Kembali</button>
     </div>
 
     <div id="campus-map" class="map"></div>
-
-    <div id="location-info" class="info-box">
-        <h2>Informasi Lokasi</h2>
-        <p>Pilih lokasi pada peta untuk melihat detail.</p>
-    </div>
-
-    <div id="admin-section" class="admin-section">
-        <h2>Admin: Kelola Lokasi</h2>
-        <button onclick="addLocation()">Tambah Lokasi</button>
-        <button onclick="editLocation()">Edit Lokasi</button>
-        <button onclick="deleteLocation()">Hapus Lokasi</button>
-    </div>
 </div>
 
-<!-- Memanggil file JavaScript eksternal -->
-<script src="script.js"></script>
+<script>
+    let map, infoWindow, directionsService, directionsRenderer;
+    let userLocation;
 
-<!-- Script untuk memuat Google Maps API dengan async defer -->
+    // Daftar lokasi utama dan sub-lokasi
+    const locations = {
+        buildingA: { lat: -1.614850, lng: 103.519641, name: "Gedung A" }
+    };
+
+    const subLocations = {
+        buildingA: {
+            direct: { name: "Gedung A", lat: -1.614850, lng: 103.519641 },
+            parking: { name: "Parkir Gedung A", lat: -1.615081, lng: 103.519658 }
+        }
+    };
+
+    // Fungsi untuk menampilkan peta untuk Tamu atau Anggota
+    function selectRole(role) {
+        document.querySelector('.login-container').style.display = 'none';
+        document.querySelector('.map-container').style.display = 'block';
+
+        if (role === 'guest') {
+            document.querySelector('.guest-options').style.display = 'flex';
+        } else {
+            document.querySelector('.guest-options').style.display = 'none';
+        }
+        
+        initMap(); // Memanggil fungsi untuk menampilkan peta
+    }
+
+    // Fungsi untuk kembali ke pilihan Tamu/Anggota
+    function goBack() {
+        document.querySelector('.map-container').style.display = 'none';
+        document.querySelector('.login-container').style.display = 'block';
+    }
+
+    // Inisialisasi peta
+    function initMap() {
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer();
+
+        map = new google.maps.Map(document.getElementById("campus-map"), {
+            center: { lat: -1.607697, lng: 103.520159 }, // Lokasi default
+            zoom: 17,
+        });
+
+        directionsRenderer.setMap(map);
+        infoWindow = new google.maps.InfoWindow();
+
+        // Coba deteksi lokasi pengguna
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                    };
+                    map.setCenter(userLocation);
+                    addMarker(userLocation, "Lokasi Anda");
+                },
+                () => handleLocationError()
+            );
+        } else {
+            handleLocationError();
+        }
+    }
+
+    // Fallback jika geolokasi gagal
+    function handleLocationError() {
+        const defaultLocation = { lat: -1.607697, lng: 103.520159 };
+        map.setCenter(defaultLocation);
+        userLocation = defaultLocation;
+    }
+
+    // Tambahkan marker di peta
+    function addMarker(position, title) {
+        const marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            title: title,
+            animation: google.maps.Animation.DROP
+        });
+
+        const infoWindow = new google.maps.InfoWindow({
+            content: `<h3>${title}</h3>`,
+        });
+
+        marker.addListener("click", () => {
+            infoWindow.open(map, marker);
+        });
+    }
+
+    // Menampilkan dropdown kedua setelah memilih lokasi utama untuk tamu
+    function showAdditionalOptions() {
+        const locationSelect = document.getElementById("location-select").value;
+        const optionSelect = document.getElementById("option-select");
+
+        if (locationSelect) {
+            optionSelect.style.display = "inline-block";
+        } else {
+            optionSelect.style.display = "none";
+        }
+    }
+
+    // Arahkan ke sub-lokasi sesuai pilihan pengguna pada dropdown kedua
+    function goToSelectedOption() {
+        const location = document.getElementById("location-select").value;
+        const option = document.getElementById("option-select").value;
+
+        if (location && option) {
+            const selectedSubLocation = subLocations[location][option];
+            map.setCenter({ lat: selectedSubLocation.lat, lng: selectedSubLocation.lng });
+            addMarker({ lat: selectedSubLocation.lat, lng: selectedSubLocation.lng }, selectedSubLocation.name);
+            calculateRoute(selectedSubLocation.lat, selectedSubLocation.lng);
+        }
+    }
+
+    // Hitung dan tampilkan rute dari userLocation ke destination
+    function calculateRoute(destinationLat, destinationLng) {
+        const request = {
+            origin: userLocation,
+            destination: { lat: destinationLat, lng: destinationLng },
+            travelMode: "DRIVING",
+        };
+
+        directionsService.route(request, (result, status) => {
+            if (status === "OK") {
+                directionsRenderer.setDirections(result);
+            } else {
+                alert("Tidak dapat menampilkan rute. Silakan coba lokasi lain atau periksa koneksi internet Anda.");
+            }
+        });
+    }
+</script>
+
 <script>
     window.onload = function() {
         var script = document.createElement("script");
