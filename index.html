@@ -1,31 +1,27 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Peta Kampus Universitas Jambi</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- Simple Line Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css">
-    <!-- Bootstrap CSS untuk font standar -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-    
     <style>
-
         header h1 {
-            font-size: 30px; /* Ubah ukuran font sesuai kebutuhan */
+            font-size: 30px;
         }
 
-        body{
-            background-image: url('background.jpg'); /* Path atau URL gambar */
-            background-size: cover; /* Menyesuaikan gambar agar menutupi seluruh layar */
-            background-repeat: no-repeat; /* Agar gambar tidak berulang */
-            background-position: center; /* Menempatkan gambar di tengah */
-            
+        body {
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
         }
-        /* Pastikan seluruh elemen halaman menempati 100% tinggi */
+
         html, body {
             height: 100%;
             margin: 0;
@@ -34,7 +30,7 @@
         }
 
         header {
-            background-color: #ff6a26;
+            background-color: #FFA500;
             color: white;
             text-align: center;
             padding: 10px 0;
@@ -44,9 +40,8 @@
             z-index: 1000;
         }
 
-        /* Setel map-container agar full height */
         .map-container {
-            padding-top: 60px; /* Jarak untuk header */
+            padding-top: 60px;
             display: none;
             height: 100%;
             box-sizing: border-box;
@@ -54,19 +49,18 @@
 
         .map {
             width: 100%;
-            height: calc(100vh - 60px); /* Sesuaikan tinggi untuk menyesuaikan header */
+            height: calc(100vh - 60px);
             margin-top: 0;
         }
 
-        /* Atur margin di atas search-bar agar tidak menyentuh header */
         .search-bar {
-            margin: 27px 10px 10px; /* Tambahkan margin atas */
+            margin: 27px 10px 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             position: fixed;
-            top: 70px; /* Di bawah header */
-            width: calc(100% - 40px); /* Ruang untuk margin di kiri dan kanan */
+            top: 70px;
+            width: calc(100% -  40px);
             z-index: 1000;
         }
 
@@ -78,7 +72,7 @@
         }
 
         .button {
-            background-color: #ff6a26;
+            background-color: #FFA500;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -88,7 +82,7 @@
         }
 
         .back-button {
-            background-color: #ff6a26;
+            background-color: #FFA500;
             color: white;
             border: none;
             padding: 8px 16px;
@@ -96,7 +90,6 @@
             font-size: 14px;
         }
 
-        /* CSS untuk tampilan login container */
         .login-container {
             display: flex;
             flex-direction: column;
@@ -106,21 +99,52 @@
             text-align: center;
         }
 
-        /* Gaya untuk judul role */
         .role-title h2 {
             margin-bottom: 20px;
             font-size: 24px;
             color: #ffffff;
         }
 
-        /* Gaya untuk tombol pilihan role */
         .role-buttons {
             display: flex;
-            gap: 10px; /* Jarak antar tombol */
+            gap: 10px;
         }
 
-        .guest-options {
+        .guest-options, .member-options {
             display: none;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 24px;
+            }
+
+            .search-bar {
+                flex-direction: column;
+                top: 60px;
+                width: 100%;
+            }
+
+            .search-bar input,
+            .search-bar select {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .button, .back-button {
+                width: 100%;
+                padding: 10px;
+                font-size: 18px;
+            }
+
+            .role-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .role-buttons .button {
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
@@ -130,34 +154,27 @@
     <h1>PETA KAMPUS UNIVERSITAS JAMBI, MENDALO</h1>
 </header>
 
-<!-- Pilihan Tamu atau Anggota -->
 <div class="login-container">
-    <!-- Tambahkan elemen untuk judul -->
     <div class="role-title">
         <h2>Pilih Masuk Sebagai: </h2>
     </div>
 
-    <!-- Kelompokkan tombol pilihan tamu dan anggota dalam div -->
     <div class="role-buttons">
         <button class="button" onclick="selectRole('guest')">Tamu</button>
         <button class="button" onclick="selectRole('member')">Anggota</button>
     </div>
 </div>
 
-<!-- Tampilan Peta dan Opsi Tamu -->
 <div class="map-container">
     <div class="search-bar">
-        <!-- Input untuk Autocomplete Pencarian -->
-        <input id="autocomplete" type="text" placeholder="Cari lokasi...">
+        <input id="autocomplete" type="text" placeholder="Cari lokasi... ">
 
-        <!-- Dropdown untuk Tamu -->
         <div class="guest-options">
             <select id="location-select" onchange="showAdditionalOptions()">
                 <option value="">Pilih Lokasi Acara</option>
-                <option value="buildingA">SI Wisuda </option>
+                <option value="buildingA">SI Wisuda</option>
             </select>
 
-            <!-- Dropdown sub-lokasi untuk tamu -->
             <select id="option-select" style="display: none;" onchange="goToSelectedOption()">
                 <option value="">Pilih tindakan</option>
                 <option value="direct">Langsung ke Tempat</option>
@@ -165,7 +182,19 @@
             </select>
         </div>
 
-        <!-- Tombol kembali di pojok kanan atas -->
+        <div class="member-options" style="display: none;">
+            <select id="building-select" onchange="showMemberActions()">
+                <option value="">Pilih Gedung</option>
+                <option value="fstB">Gedung FST B</option>
+            </select>
+
+            <select id="member-action-select" style="display: none;" onchange="goToSelectedMemberOption()">
+                <option value="">Pilih tindakan</option>
+                <option value="direct">Langsung ke Tempat</option>
+                <option value="parking">Tempat Parkir</option>
+            </select>
+        </div>
+
         <button class="back-button" onclick="goBack()">Kembali</button>
     </div>
 
@@ -176,11 +205,14 @@
     let map, infoWindow, directionsService, directionsRenderer, autocomplete;
     let userLocation;
 
-    // Daftar lokasi utama dan sub-lokasi
     const subLocations = {
         buildingA: {
             direct: { name: "Gedung A", lat: -1.614850, lng: 103.519641 },
             parking: { name: "Parkir Gedung A", lat: -1.615081, lng: 103.519658 }
+        },
+        fstB: {
+            direct: { name: "Gedung FST B", lat: -1.615590303751922, lng: 103.51976420258595 },
+            parking: { name: "Parkir Gedung FST B", lat: -1.616059255212965, lng: 103.51990580855811 }
         }
     };
 
@@ -190,8 +222,12 @@
 
         if (role === 'guest') {
             document.querySelector('.guest-options').style.display = 'flex';
+            document.querySelector('.member-options').style.display = 'none';
+            document.getElementById("option-select").style.display = "inline-block"; // Show the "Pilih Tindakan" dropdown
         } else {
             document.querySelector('.guest-options').style.display = 'none';
+            document.querySelector('.member-options').style.display = 'flex';
+            document.getElementById("member-action-select").style.display = "inline-block"; // Show the "Pilih Tindakan" dropdown
         }
         
         initMap();
@@ -209,12 +245,12 @@
         map = new google.maps.Map(document.getElementById("campus-map"), {
             center: { lat: -1.607697, lng: 103.520159 },
             zoom: 18,
-            mapTypeId: google.maps.MapTypeId.HYBRID, // Setel mode awal ke satelit
+            mapTypeId: google.maps.MapTypeId.HYBRID,
             mapTypeControl: true,
             mapTypeControlOptions: {
                 style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
                 mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain'],
-                position: google.maps.ControlPosition.LEFT_CENTER // Kontrol posisi di kiri tengah
+                position: google.maps.ControlPosition.LEFT_CENTER
             },
             zoomControl: true,
         });
@@ -222,7 +258,6 @@
         directionsRenderer.setMap(map);
         infoWindow = new google.maps.InfoWindow();
 
-        // Coba mendeteksi lokasi pengguna
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -239,7 +274,6 @@
             handleLocationError();
         }
 
-        // Setup Google Places Autocomplete
         autocomplete = new google.maps.places.Autocomplete(
             document.getElementById("autocomplete"), 
             { fields: ["place_id", "geometry", "name"] }
@@ -248,7 +282,6 @@
     }
 
     function handleLocationError() {
-        // Lokasi default jika geolokasi gagal
         const defaultLocation = { lat: -1.607697, lng: 103.520159 };
         map.setCenter(defaultLocation);
         userLocation = defaultLocation;
@@ -302,6 +335,29 @@
 
         if (location && option) {
             const selectedSubLocation = subLocations[location][option];
+            map.setCenter({ lat: selectedSubLocation.lat, lng: selectedSubLocation.lng });
+            addMarker({ lat: selectedSubLocation.lat, lng: selectedSubLocation.lng }, selectedSubLocation.name);
+            calculateRoute(selectedSubLocation.lat, selectedSubLocation.lng);
+        }
+    }
+
+    function showMemberActions() {
+        const buildingSelect = document.getElementById("building-select").value;
+        const memberActionSelect = document.getElementById("member-action-select");
+
+        if (buildingSelect) {
+            memberActionSelect.style.display = "inline-block";
+        } else {
+            memberActionSelect.style.display = "none";
+        }
+    }
+
+    function goToSelectedMemberOption() {
+        const building = document.getElementById("building-select").value;
+        const action = document.getElementById("member-action-select").value;
+
+        if (building && action) {
+            const selectedSubLocation = subLocations[building][action];
             map.setCenter({ lat: selectedSubLocation.lat, lng: selectedSubLocation.lng });
             addMarker({ lat: selectedSubLocation.lat, lng: selectedSubLocation.lng }, selectedSubLocation.name);
             calculateRoute(selectedSubLocation.lat, selectedSubLocation.lng);
