@@ -1,1 +1,135 @@
+header h1 {
+    font-size: 30px;
+}
 
+body {
+    background-image: url('background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+header {
+    background-color: #FFA500;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.map-container {
+    padding-top: 60px;
+    display: none;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.map {
+    width: 100%;
+    height: calc(100vh - 60px);
+    margin-top: 0;
+}
+
+.search-bar {
+    margin: 27px 10px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 70px;
+    width: calc(100% -  40px);
+    z-index: 1000;
+}
+
+.search-bar select, .search-bar input {
+    margin-right: 10px;
+    padding: 8px;
+    font-size: 16px;
+    width: 100%;
+}
+
+.button {
+    background-color: #FFA500;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.back-button {
+    background-color: #FFA500;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+}
+
+.role-title h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #ffffff;
+}
+
+.role-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.guest-options, .member-options {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 24px;
+    }
+
+    .search-bar {
+        flex-direction: column;
+        top: 60px;
+        width: 100%;
+    }
+
+    .search-bar input,
+    .search-bar select {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .button, .back-button {
+        width: 100%;
+        padding: 10px;
+        font-size: 18px;
+    }
+
+    .role-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .role-buttons .button {
+        margin-bottom: 10px;
+    }
+}
